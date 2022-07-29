@@ -1,7 +1,7 @@
-import {Routes, Route, Link} from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 
 import Navbar from './components/Navbar'
-import FeaturedProd from './components/FeaturedProd'
+import FeaturedProd from './container/FeaturedProd'
 import ProductDetails from './components/ProductDetails'
 
 function App() {

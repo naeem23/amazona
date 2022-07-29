@@ -1,8 +1,15 @@
-import { useParams, Link } from 'react-router-dom'
-import Rating from './Rating'
+import { useContext } from 'react'
+import { Link } from 'react-router-dom'
+import { cartContext } from '../CartContext'
+import Rating from '../components/Rating'
 
 const Product = ({ product }) => {
-    const { slug } = useParams()
+	// add to cart 
+	const { dispatch: cartDispatch } = useContext(cartContext)
+	const addToCartHandler = () => {
+		cartDispatch({type: 'CART_ADD_ITEM', payload: {...product, quantity: 1}})
+	}
+
     return (
         <div className='card'>
 			<Link to={`product/${product.slug}`}>
@@ -14,7 +21,7 @@ const Product = ({ product }) => {
 				</Link>
 				<Rating rating={product.rating} numReviews={product.numReviews} />
 				<p className='card-text mt-2'><strong>${product.price}</strong></p>
-				<button className='btn btn-warning btn-sm'>Add to cart</button>
+				<button className='btn btn-warning btn-sm' onClick={addToCartHandler}>Add to cart</button>
 			</div>
 		</div>
     )

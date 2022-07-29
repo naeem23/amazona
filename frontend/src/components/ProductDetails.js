@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { useReducer, useEffect } from 'react'
+import { useReducer, useEffect, useContext } from 'react'
 import { useParams } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 
@@ -7,6 +7,7 @@ import Rating from './Rating'
 import Loading from './Loading'
 import AlertBox from './AlertBox'
 import { getError } from '../utils'
+import { cartContext } from '../CartContext'
 
 // reducer for fetching product details 
 const reducer = (state, action) => {
@@ -39,6 +40,11 @@ const ProductDetails = () => {
         fetchData()
     }, [slug])
     
+    // add to cart funcationality 
+    const { dispatch: cartDispatch } = useContext(cartContext)
+    const addToCartHandler = () => {
+        cartDispatch({type: 'CART_ADD_ITEM', payload: {...product, quantity: 1}})
+    }
 
     return (
         <div className='container'>
@@ -88,7 +94,7 @@ const ProductDetails = () => {
                                         <div className='d-grid'>
                                             {
                                                 product.countInStock > 0 && (
-                                                    <button className='btn btn-warning btn-sm'>Add to cart</button>
+                                                    <button className='btn btn-warning btn-sm' onClick={addToCartHandler}>Add to cart</button>
                                                 )
                                             }
                                         </div>

@@ -1,11 +1,10 @@
-import { useState, useEffect, useReducer } from 'react'
-import { Link } from 'react-router-dom'
+import { useEffect, useReducer } from 'react'
 import axios from 'axios'
 import { Helmet } from 'react-helmet-async'
 
 import Product from './Product'
-import Loading from './Loading'
-import AlertBox from './AlertBox'
+import Loading from '../components/Loading'
+import AlertBox from '../components/AlertBox'
 import { getError } from '../utils'
 
 // reducer for fetching products 
