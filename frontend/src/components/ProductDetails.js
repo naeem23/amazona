@@ -31,7 +31,7 @@ const ProductDetails = () => {
         const fetchData = async () => {
             dispatch({type: 'FETCH_REQUEST'})
             try {
-                const result = await axios.get(`/api/product/${slug}`)
+                const result = await axios.get(`/api/products/slug/${slug}`)
                 dispatch({type: 'FETCH_SUCCESS', payload: result.data})
             } catch (error) {
                 dispatch({type: 'FETCH_FAIL', payload: getError(error)})
@@ -41,9 +41,21 @@ const ProductDetails = () => {
     }, [slug])
     
     // add to cart funcationality 
-    const { dispatch: cartDispatch } = useContext(cartContext)
-    const addToCartHandler = () => {
-        cartDispatch({type: 'CART_ADD_ITEM', payload: {...product, quantity: 1}})
+    const { state, dispatch: cartDispatch } = useContext(cartContext)
+    const { cart } = state
+
+    const addToCartHandler = async () => {
+        const existItem = cart.cartItems.find(x => x._id === product._id)
+        const quantity = existItem ? existItem.quantity + 1 : 1
+        const { data } = await axios.get(`/api/products/${product._id}`)
+        if (data.countInStock < quantity) {
+            window.alert("Sorry. Product is out of stock")
+            return 
+        }
+        cartDispatch({
+            type: 'CART_ADD_ITEM', 
+            payload: {...product, quantity}
+        })
     }
 
     return (
@@ -77,6 +89,10 @@ const ProductDetails = () => {
                                     <div className='row'>
                                         <div className='col-6'>Price:</div>
                                         <div className='col-6'>${product.price}</div>
+                                    </div>
+                                    <div className='row mt-2'>
+                                        <div className='col-6'>Available:</div>
+                                        <div className='col-6'>{product.countInStock} items</div>
                                     </div>
                                     <div className='row mt-2'>
                                         <div className='col-6'>Status:</div>

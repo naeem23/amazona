@@ -21,7 +21,14 @@ const Navbar = () => {
                                 <i className="text-white fas fa-shopping-basket"></i>
                                 {
                                     cart.cartItems.length > 0 && (
-                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{cart.cartItems.length}</span>
+                                        // this line will increase the quantity of existing item but cart number won't increase 
+                                        // <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{cart.cartItems.length}</span>
+                                        // this will increase the cart number too along with product quantity where 0 is accumulator default value
+                                        <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{
+                                            cart.cartItems.reduce((accumulator, currentItem) => 
+                                                accumulator + currentItem.quantity, 0
+                                            )
+                                        }</span>
                                     )
                                 }
                             </button>
