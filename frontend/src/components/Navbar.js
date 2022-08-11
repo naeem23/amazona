@@ -1,10 +1,21 @@
 import { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { cartContext } from '../CartContext';
 
 const Navbar = () => {
     const { state } = useContext(cartContext);
     const { cart } = state;
+    const userInfo =
+        localStorage.getItem('userInfo') !== 'undefined'
+            ? JSON.parse(localStorage.getItem('userInfo'))
+            : null;
+
+    const navigate = useNavigate();
+
+    const singOutHandler = () => {
+        localStorage.removeItem('userInfo');
+        navigate('/signin');
+    };
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -27,8 +38,8 @@ const Navbar = () => {
                     className="collapse navbar-collapse"
                     id="navbarSupportedContent"
                 >
-                    <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li className="nav-item">
+                    <ul className="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
+                        <li className="nav-item me-1">
                             <Link className="nav-link" to="/cart">
                                 <button className="btn btn-sm position-relative">
                                     <i className="text-white fas fa-shopping-basket"></i>
@@ -48,6 +59,39 @@ const Navbar = () => {
                                 </button>
                             </Link>
                         </li>
+                        {userInfo ? (
+                            <>
+                                <li className="nav-item me-1">
+                                    <Link className="nav-link" to="/profile">
+                                        <button className="btn btn-sm">
+                                            <i className="fas fa-user text-white me-1"></i>
+                                            <span
+                                                style={{ fontSize: '12px' }}
+                                                className="text-white"
+                                            >
+                                                {userInfo.name}
+                                            </span>
+                                        </button>
+                                    </Link>
+                                </li>
+                                <li className="nav-item">
+                                    <button
+                                        className="btn btn-sm nav-link"
+                                        onClick={singOutHandler}
+                                    >
+                                        <i className="fas fa-sign-out-alt text-white"></i>
+                                    </button>
+                                </li>
+                            </>
+                        ) : (
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/signin">
+                                    <button className="btn btn-sm">
+                                        <i className="fas fa-sign-in-alt text-white"></i>
+                                    </button>
+                                </Link>
+                            </li>
+                        )}
                     </ul>
                 </div>
             </div>
