@@ -7,6 +7,7 @@ import FeaturedProd from './container/FeaturedProd';
 import ProductDetails from './components/ProductDetails';
 import Cart from './container/Cart';
 import Signin from './container/Signin';
+import ShippingAddress from './container/ShippingAddress';
 
 function App() {
     return (
@@ -20,10 +21,11 @@ function App() {
             {/* main content */}
             <main className="container py-4">
                 <Routes>
-                    <Route path="/" element={<FeaturedProd />} />
                     <Route path="/cart" element={<Cart />} />
                     <Route path="/signin" element={<Signin />} />
+                    <Route path="/shipping" element={<ShippingAddress />} />
                     <Route path="/product/:slug" element={<ProductDetails />} />
+                    <Route path="/" element={<FeaturedProd />} />
                 </Routes>
             </main>
 

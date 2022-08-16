@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { cartContext } from '../CartContext';
 
 const Navbar = () => {
-    const { state } = useContext(cartContext);
+    const { state, dispatch: cartDispatch } = useContext(cartContext);
     const { cart } = state;
     const userInfo =
         localStorage.getItem('userInfo') !== 'undefined'
@@ -13,8 +13,9 @@ const Navbar = () => {
     const navigate = useNavigate();
 
     const singOutHandler = () => {
+        cartDispatch({ type: 'USER_SIGNOUT' });
         localStorage.removeItem('userInfo');
-        navigate('/signin');
+        localStorage.removeItem('shippingAddress');
     };
 
     return (
